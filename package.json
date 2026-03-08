@@ -5,7 +5,7 @@
   "main": "index.html",
   "homepage": "https://kuroiro4696siro-cyber.github.io/quest-reminder/",
   "scripts": {
-    "build": "if not exist dist mkdir dist && copy index.html dist\\ && echo Build complete",
+    "build": "powershell -Command \"New-Item -ItemType Directory -Force dist | Out-Null; Copy-Item index.html dist/index.html -Force; Write-Host 'Build complete'\"",
     "deploy": "npm run build && gh-pages -d dist",
     "dev": "npx http-server"
   },
