@@ -1,0 +1,18 @@
+{
+  "name": "quest-reminder",
+  "version": "1.0.0",
+  "description": "QuestLog - 異界冒険記録 (Otherworld Adventure Record)",
+  "main": "index.html",
+  "homepage": "https://kuroiro4696siro-cyber.github.io/quest-reminder/",
+  "scripts": {
+    "build": "if not exist dist mkdir dist && copy index.html dist\\ && echo Build complete",
+    "deploy": "npm run build && gh-pages -d dist",
+    "dev": "npx http-server"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.0"
+  },
+  "keywords": ["quest", "reminder", "log"],
+  "author": "kuroiro4696siro-cyber",
+  "license": "ISC"
+}
