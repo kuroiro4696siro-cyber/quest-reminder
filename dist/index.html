@@ -875,6 +875,11 @@ textarea.form-input {
 }
 
 /* ── DETAIL VIEW ── */
+.detail-modal-sheet {
+  max-height: calc(100vh - env(safe-area-inset-top, 0px) - 16px);
+  height: calc(100vh - env(safe-area-inset-top, 0px) - 16px);
+}
+
 .detail-header {
   padding: 20px;
   border-bottom: 1px solid var(--border-silver);
@@ -882,17 +887,19 @@ textarea.form-input {
 }
 
 .detail-back {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   font-family: var(--font-title);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--text-dim);
   cursor: pointer;
   margin-bottom: 12px;
-  width: fit-content;
+  padding: 10px 14px 10px 0;
+  min-height: 44px;
   transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .detail-back:hover { color: var(--gold-mid); }
@@ -1618,7 +1625,7 @@ textarea.form-input {
 
 <!-- QUEST DETAIL (full screen) -->
 <div class="modal-overlay" id="detailModal" style="align-items: stretch;">
-  <div class="modal-sheet" style="max-height:100vh; border-radius: var(--radius-xl) var(--radius-xl) 0 0;">
+  <div class="modal-sheet detail-modal-sheet" style="border-radius: var(--radius-xl) var(--radius-xl) 0 0;">
     <div class="modal-handle"></div>
     <div id="detailContent"><!-- dynamic --></div>
   </div>
