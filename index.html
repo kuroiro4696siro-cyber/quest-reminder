@@ -1042,6 +1042,218 @@ textarea.form-input {
 .context-menu-item.success { color: var(--success); }
 .context-menu-item.success:hover { background: rgba(64,232,128,0.1); }
 
+/* ── XP BAR IN HEADER ── */
+.header-xp-bar {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-level-badge {
+  font-family: var(--font-title);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--gold-bright);
+  background: rgba(212,165,32,0.15);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 2px 9px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.header-level-badge:hover { background: rgba(212,165,32,0.25); }
+
+.xp-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-bright));
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+  animation: xp-shimmer 2s linear infinite;
+}
+
+@keyframes xp-shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(200%); }
+}
+
+.xp-label {
+  font-family: var(--font-title);
+  font-size: 9px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+/* ── LEVEL UP OVERLAY ── */
+#levelup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2,1,8,0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+#levelup-overlay.active { opacity: 1; pointer-events: all; }
+
+.levelup-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+.levelup-rings {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+
+.levelup-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--gold-mid);
+  opacity: 0;
+}
+#levelup-overlay.active .levelup-ring { animation: ring-expand 2s ease-out infinite; }
+.ring-1 { width: 100px; height: 100px; animation-delay: 0s !important; }
+.ring-2 { width: 100px; height: 100px; animation-delay: 0.5s !important; }
+.ring-3 { width: 100px; height: 100px; animation-delay: 1s !important; }
+
+@keyframes ring-expand {
+  0%   { transform: scale(0.5); opacity: 0.8; border-color: var(--gold-bright); }
+  100% { transform: scale(4);   opacity: 0;   border-color: var(--arcane); }
+}
+
+.levelup-main {
+  position: relative; text-align: center;
+  animation: levelup-appear 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes levelup-appear {
+  from { transform: scale(0.3) translateY(40px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);    opacity: 1; }
+}
+
+.levelup-label {
+  font-family: var(--font-title);
+  font-size: 13px; letter-spacing: 8px;
+  color: var(--arcane); text-transform: uppercase; margin-bottom: 8px;
+  filter: drop-shadow(0 0 8px var(--arcane));
+  animation: levelup-label-pulse 1s ease-in-out infinite alternate;
+}
+@keyframes levelup-label-pulse {
+  from { opacity: 0.7; }
+  to   { opacity: 1; filter: drop-shadow(0 0 16px var(--arcane)); }
+}
+
+.levelup-number {
+  font-family: var(--font-display);
+  font-size: 72px; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, var(--arcane) 0%, var(--gold-bright) 50%, white 75%, var(--gold-bright) 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: levelup-shimmer 1.5s linear infinite;
+  filter: drop-shadow(0 0 30px rgba(168,85,247,0.6));
+  margin-bottom: 12px;
+}
+@keyframes levelup-shimmer {
+  0%   { background-position: 0%   50%; }
+  100% { background-position: 300% 50%; }
+}
+
+.levelup-rank {
+  font-family: var(--font-title); font-size: 20px; font-weight: 600;
+  color: var(--gold-bright); letter-spacing: 4px; margin-bottom: 6px;
+  filter: drop-shadow(0 0 10px rgba(212,165,32,0.6));
+}
+.levelup-rank-sub {
+  font-family: var(--font-title); font-size: 10px; letter-spacing: 4px;
+  color: var(--text-dim); text-transform: uppercase; margin-bottom: 16px;
+}
+.levelup-xp-gained {
+  display: inline-block; font-family: var(--font-title); font-size: 16px;
+  color: var(--success); letter-spacing: 3px;
+  padding: 4px 20px; border: 1px solid rgba(64,232,128,0.4);
+  border-radius: 20px; background: rgba(64,232,128,0.1);
+  filter: drop-shadow(0 0 8px rgba(64,232,128,0.4));
+}
+
+/* ── PROFILE MODAL ── */
+.profile-hero-card {
+  background: linear-gradient(135deg, rgba(20,10,40,0.9) 0%, rgba(8,4,20,0.95) 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  padding: 20px; text-align: center; margin-bottom: 16px;
+  position: relative; overflow: hidden;
+}
+.profile-hero-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,165,32,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.profile-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--arcane-glow) 0%, var(--gold-dark) 100%);
+  border: 2px solid var(--gold-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin: 0 auto 12px;
+  box-shadow: 0 0 20px rgba(212,165,32,0.3), 0 0 40px rgba(168,85,247,0.2);
+}
+
+.profile-level-big { font-family: var(--font-display); font-size: 11px; letter-spacing: 3px; color: var(--arcane); text-transform: uppercase; margin-bottom: 2px; }
+.profile-rank-name { font-family: var(--font-title); font-size: 22px; font-weight: 700; color: var(--gold-bright); letter-spacing: 2px; margin-bottom: 4px; filter: drop-shadow(0 0 8px rgba(212,165,32,0.4)); }
+.profile-level-num { font-family: var(--font-title); font-size: 13px; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 16px; }
+
+.profile-xp-bar-track { height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; margin: 6px 0; border: 1px solid rgba(255,255,255,0.06); }
+.profile-xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--arcane-glow) 0%, var(--arcane) 50%, var(--gold-mid) 100%);
+  border-radius: 5px; transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  position: relative; overflow: hidden;
+}
+.profile-xp-bar-fill::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: xp-shimmer 2s linear infinite; }
+.profile-xp-numbers { display: flex; justify-content: space-between; font-family: var(--font-title); font-size: 10px; color: var(--text-dim); letter-spacing: 1px; }
+
+.profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.profile-stat-card { background: rgba(4,2,10,0.6); border: 1px solid var(--border-silver); border-radius: var(--radius-md); padding: 12px; text-align: center; }
+.profile-stat-value { font-family: var(--font-display); font-size: 22px; color: var(--gold-bright); filter: drop-shadow(0 0 6px rgba(212,165,32,0.4)); margin-bottom: 3px; }
+.profile-stat-label { font-family: var(--font-title); font-size: 9px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
+
+.profile-rank-ladder { background: rgba(4,2,10,0.5); border: 1px solid var(--border-silver); border-radius: var(--radius-md); overflow: hidden; }
+.rank-ladder-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; }
+.rank-ladder-item:last-child { border-bottom: none; }
+.rank-ladder-item.current { background: rgba(212,165,32,0.1); border-left: 2px solid var(--gold-mid); }
+.rank-ladder-item.locked { opacity: 0.3; }
+.rank-ladder-icon { font-size: 18px; width: 24px; text-align: center; }
+.rank-ladder-info { flex: 1; }
+.rank-ladder-name { font-family: var(--font-title); font-size: 12px; color: var(--text-bright); letter-spacing: 0.5px; }
+.rank-ladder-req { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+.rank-ladder-current-badge { font-family: var(--font-title); font-size: 9px; letter-spacing: 1px; color: var(--gold-bright); background: rgba(212,165,32,0.15); border: 1px solid var(--border-gold); border-radius: 10px; padding: 2px 8px; }
+
+/* ── QUEST XP BADGE ── */
+.badge-xp { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3); color: var(--arcane); }
+
 /* ── QUEST CLEAR OVERLAY ── */
 #clear-overlay {
   position: fixed;
@@ -1497,8 +1709,14 @@ textarea.form-input {
         <div class="header-subtitle">異界冒険記録システム</div>
       </div>
       <div class="header-actions">
+        <button class="icon-btn" id="profileBtn" title="冒険者記録">⚔</button>
         <button class="icon-btn" id="settingsBtn" title="設定">⚙</button>
       </div>
+    </div>
+    <div class="header-xp-bar">
+      <div class="header-level-badge" id="headerLevelBadge">Lv.1</div>
+      <div class="xp-track"><div class="xp-fill" id="headerXpFill" style="width:0%"></div></div>
+      <div class="xp-label" id="headerXpLabel">0/100</div>
     </div>
     <nav class="nav-tabs">
       <button class="nav-tab active" data-tab="home">本日</button>
@@ -1681,7 +1899,39 @@ textarea.form-input {
   </div>
 </div>
 
-<!-- QUEST CLEAR OVERLAY -->
+<!-- LEVEL UP OVERLAY -->
+<div id="levelup-overlay">
+  <div class="levelup-particles" id="levelupParticles"></div>
+  <div class="levelup-rings">
+    <div class="levelup-ring ring-1"></div>
+    <div class="levelup-ring ring-2"></div>
+    <div class="levelup-ring ring-3"></div>
+  </div>
+  <div class="levelup-main">
+    <div class="levelup-label">LEVEL UP!</div>
+    <div class="levelup-number" id="levelupNumber">Lv.2</div>
+    <div class="levelup-rank" id="levelupRank">冒険者</div>
+    <div class="levelup-xp-gained" id="levelupXpGained">＋50 XP</div>
+    <button class="btn btn-primary" id="levelupCloseBtn" style="max-width:200px;margin:24px auto 0;">
+      ✦ 続ける
+    </button>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">⚔ 冒険者記録</div>
+      <div class="modal-title-deco">Adventurer Profile</div>
+      <button class="modal-close" id="profileModalClose">✕</button>
+    </div>
+    <div class="modal-body" id="profileBody"><!-- dynamic --></div>
+  </div>
+</div>
+
+
 <div id="clear-overlay">
   <div class="clear-particles" id="clearParticles"></div>
   <div class="clear-main">
@@ -1693,6 +1943,7 @@ textarea.form-input {
     <div class="clear-title">QUEST CLEAR!</div>
     <div class="clear-subtitle">✦ Mission Accomplished ✦</div>
     <div class="clear-quest-name" id="clearQuestName"></div>
+    <div id="clearXpBadge" style="display:inline-block;font-family:var(--font-title);font-size:15px;color:var(--arcane);letter-spacing:2px;padding:4px 18px;border:1px solid rgba(168,85,247,0.4);border-radius:20px;background:rgba(168,85,247,0.1);margin-bottom:20px;filter:drop-shadow(0 0 8px rgba(168,85,247,0.4));"></div>
     <button class="btn btn-primary" id="clearContinueBtn" style="max-width:200px;margin:0 auto;">
       続ける →
     </button>
@@ -1878,6 +2129,7 @@ let editingQuestId = null;
 let repeatEnabled = false;
 let selectedDays = [];
 let pendingClearQuestId = null;
+let pendingClearXp = 0;
 let undoStack = [];
 let pendingModalSubs = [];
 let editingExistingSubs = [];
@@ -2243,7 +2495,12 @@ async function toggleSubDone(questId, subId, done) {
   if (allDone) {
     await completeQuest(questId);
   } else {
-    if (done) showToast('✦ サブクエスト完了！');
+    if (done) {
+      // Award sub XP
+      updateStats('sub');
+      await awardXP(calcSubXP(), 'sub');
+      showToast(`✦ サブクエスト完了！ ＋${calcSubXP()} XP`);
+    }
     await renderDetail(questId);
     render();
   }
@@ -2275,8 +2532,14 @@ async function completeQuest(id) {
   // Handle repeat
   if (quest.repeat_enabled) await generateNextRepeat(quest);
 
+  // Award XP
+  const xpGain = calcQuestXP(quest);
+  updateStats('quest');
+  const { leveledUp } = await awardXP(xpGain, 'quest');
+
   playSE_QuestClear();
-  showClearOverlay(quest.title, id);
+  // Show QUEST CLEAR, then optionally level-up is handled inside awardXP
+  showClearOverlay(quest.title, id, xpGain);
 }
 
 async function failQuest(id) {
@@ -2567,9 +2830,14 @@ async function saveQuest() {
 // ═══════════════════════════════════════
 // MEMO
 // ═══════════════════════════════════════
-function showClearOverlay(questTitle, questId) {
+function showClearOverlay(questTitle, questId, xpGained) {
   pendingClearQuestId = questId;
+  pendingClearXp = xpGained || 0;
   document.getElementById('clearQuestName').textContent = questTitle;
+
+  // Show XP badge
+  const xpBadge = document.getElementById('clearXpBadge');
+  if (xpBadge) xpBadge.textContent = `＋${xpGained || 0} XP`;
 
   // Particles
   const pc = document.getElementById('clearParticles');
@@ -2598,7 +2866,7 @@ function showClearOverlay(questTitle, questId) {
   document.getElementById('clear-overlay').classList.add('active');
 }
 
-document.getElementById('clearContinueBtn')?.addEventListener('click', () => {
+document.getElementById('clearContinueBtn')?.addEventListener('click', async () => {
   document.getElementById('clear-overlay').classList.remove('active');
   if (pendingClearQuestId) {
     openMemoModal(pendingClearQuestId);
@@ -2877,10 +3145,25 @@ document.getElementById('clearDataBtn').addEventListener('click', () => {
     for (const q of quests) await dbDelete('quests', q.id);
     const subs = await dbGetAll('subquests');
     for (const s of subs) await dbDelete('subquests', s.id);
+    // Reset XP & stats
+    localStorage.removeItem('ql_xp');
+    localStorage.removeItem('ql_stats');
+    updateHeaderXP();
     closeModal('settingsModal');
     showToast('データを消去しました');
     render();
   });
+});
+
+// Profile button
+document.getElementById('profileBtn').addEventListener('click', () => {
+  renderProfileModal();
+  openModal('profileModal');
+});
+document.getElementById('profileModalClose').addEventListener('click', () => closeModal('profileModal'));
+document.getElementById('headerLevelBadge').addEventListener('click', () => {
+  renderProfileModal();
+  openModal('profileModal');
 });
 
 // Modal backdrop click
@@ -2904,11 +3187,255 @@ document.addEventListener('touchstart', () => getAudioCtx(), { once: true, passi
 document.addEventListener('click', () => getAudioCtx(), { once: true });
 
 // ═══════════════════════════════════════
+// LEVEL / XP SYSTEM
+// ═══════════════════════════════════════
+const RANKS = [
+  { level: 1,  name: '冒険者見習い', icon: '🌱', minXp: 0 },
+  { level: 5,  name: '冒険者',       icon: '⚔',  minXp: 400 },
+  { level: 10, name: '勇敢なる戦士', icon: '🛡',  minXp: 1200 },
+  { level: 15, name: '精鋭の騎士',   icon: '⚜',  minXp: 2500 },
+  { level: 20, name: '魔法使い',     icon: '🔮',  minXp: 4500 },
+  { level: 25, name: '賢者',         icon: '📜',  minXp: 7500 },
+  { level: 30, name: '英雄',         icon: '🌟',  minXp: 12000 },
+  { level: 40, name: '伝説の勇者',   icon: '⭐',  minXp: 20000 },
+  { level: 50, name: '神話の英雄',   icon: '🔱',  minXp: 35000 },
+  { level: 99, name: '異界の覇者',   icon: '👑',  minXp: 60000 },
+];
+
+// XP needed to reach next level from level N
+function xpForLevel(level) {
+  // Base 100, grows gradually
+  return Math.floor(100 + (level - 1) * 30 + Math.pow(level - 1, 1.5) * 5);
+}
+
+// Total XP required to reach a given level from 0
+function totalXpForLevel(level) {
+  let total = 0;
+  for (let i = 1; i < level; i++) total += xpForLevel(i);
+  return total;
+}
+
+// Compute level & progress from total XP
+function computeLevel(totalXp) {
+  let level = 1;
+  let xpUsed = 0;
+  while (true) {
+    const needed = xpForLevel(level);
+    if (xpUsed + needed > totalXp) break;
+    xpUsed += needed;
+    level++;
+    if (level >= 99) break;
+  }
+  const xpIntoLevel = totalXp - xpUsed;
+  const xpNeeded = xpForLevel(level);
+  return { level, xpIntoLevel, xpNeeded };
+}
+
+function getRank(level) {
+  let rank = RANKS[0];
+  for (const r of RANKS) {
+    if (level >= r.level) rank = r;
+  }
+  return rank;
+}
+
+function getPlayerXP() {
+  try { return parseInt(localStorage.getItem('ql_xp') || '0', 10); } catch(e) { return 0; }
+}
+
+function setPlayerXP(xp) {
+  localStorage.setItem('ql_xp', String(xp));
+}
+
+function calcQuestXP(quest) {
+  const subBonus = (quest.sub_total_count || 0) * 15;
+  const repeatBonus = quest.repeat_enabled ? 20 : 0;
+  return 50 + subBonus + repeatBonus;
+}
+
+function calcSubXP() { return 10; }
+
+async function awardXP(amount, source) {
+  const oldXp = getPlayerXP();
+  const newXp = oldXp + amount;
+  setPlayerXP(newXp);
+
+  const oldData = computeLevel(oldXp);
+  const newData = computeLevel(newXp);
+
+  updateHeaderXP();
+
+  if (newData.level > oldData.level) {
+    // Level up!
+    await showLevelUpOverlay(newData.level, amount);
+  }
+
+  return { gained: amount, leveledUp: newData.level > oldData.level };
+}
+
+function updateHeaderXP() {
+  const xp = getPlayerXP();
+  const { level, xpIntoLevel, xpNeeded } = computeLevel(xp);
+  const rank = getRank(level);
+  const pct = Math.min(100, Math.round((xpIntoLevel / xpNeeded) * 100));
+
+  const badge = document.getElementById('headerLevelBadge');
+  const fill  = document.getElementById('headerXpFill');
+  const label = document.getElementById('headerXpLabel');
+  if (badge) badge.textContent = `${rank.icon} Lv.${level}`;
+  if (fill)  fill.style.width = pct + '%';
+  if (label) label.textContent = `${xpIntoLevel}/${xpNeeded}`;
+}
+
+function playSE_LevelUp() {
+  if (!settings.seEnabled) return;
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  // Ascending triumphant fanfare
+  const seq = [
+    [523, 0.00], [659, 0.12], [784, 0.24], [1047, 0.36],
+    [1319, 0.52], [1568, 0.64], [2093, 0.80]
+  ];
+  seq.forEach(([freq, delay]) => {
+    playTone(freq, 'sine', 0.5, 0.3, delay);
+    playTone(freq * 1.5, 'triangle', 0.25, 0.12, delay + 0.04);
+  });
+  setTimeout(() => {
+    [1047, 1319, 1568, 2093].forEach((f, i) => playTone(f, 'sine', 0.8, 0.22, i * 0.1));
+  }, 900);
+}
+
+function showLevelUpOverlay(newLevel, xpGained) {
+  return new Promise(resolve => {
+    const rank = getRank(newLevel);
+    document.getElementById('levelupNumber').textContent = `Lv.${newLevel}`;
+    document.getElementById('levelupRank').textContent = `${rank.icon} ${rank.name}`;
+    document.getElementById('levelupXpGained').textContent = `＋${xpGained} XP`;
+
+    // Add rank subtitle
+    let sub = document.getElementById('levelupRankSub');
+    if (!sub) {
+      sub = document.createElement('div');
+      sub.id = 'levelupRankSub';
+      sub.className = 'levelup-rank-sub';
+      document.getElementById('levelupRank').after(sub);
+    }
+    sub.textContent = 'RANK UNLOCKED';
+
+    // Particles
+    const pc = document.getElementById('levelupParticles');
+    pc.innerHTML = '';
+    const colors = ['#a855f7','#7c3aed','#f5c842','#ffffff','#4488ff','#40e880','#d4a520'];
+    for (let i = 0; i < 80; i++) {
+      const p = document.createElement('div');
+      p.className = 'clear-particle';
+      const size = 3 + Math.random() * 7;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 80 + Math.random() * 250;
+      p.style.cssText = `
+        width:${size}px;height:${size}px;background:${color};
+        left:calc(50% - ${size/2}px);top:calc(50% - ${size/2}px);
+        border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+        --tx:${Math.cos(angle)*dist}px;--ty:${Math.sin(angle)*dist}px;
+        --dur:${1+Math.random()*1.5}s;--delay:${Math.random()*0.4}s;
+      `;
+      pc.appendChild(p);
+    }
+
+    playSE_LevelUp();
+    document.getElementById('levelup-overlay').classList.add('active');
+
+    const close = () => {
+      document.getElementById('levelup-overlay').classList.remove('active');
+      resolve();
+    };
+
+    document.getElementById('levelupCloseBtn').onclick = close;
+  });
+}
+
+function renderProfileModal() {
+  const xp = getPlayerXP();
+  const { level, xpIntoLevel, xpNeeded } = computeLevel(xp);
+  const rank = getRank(level);
+  const pct = Math.min(100, Math.round((xpIntoLevel / xpNeeded) * 100));
+
+  // Stats
+  const allQuests = JSON.parse(localStorage.getItem('ql_stats') || '{"questsDone":0,"subsDone":0,"totalXp":0}');
+
+  const rankLadderHtml = RANKS.map(r => {
+    const unlocked = level >= r.level;
+    const isCurrent = rank === r;
+    return `
+      <div class="rank-ladder-item ${isCurrent ? 'current' : ''} ${unlocked ? 'unlocked' : 'locked'}">
+        <div class="rank-ladder-icon">${r.icon}</div>
+        <div class="rank-ladder-info">
+          <div class="rank-ladder-name">${r.name}</div>
+          <div class="rank-ladder-req">Lv.${r.level} 以上</div>
+        </div>
+        ${isCurrent ? '<div class="rank-ladder-current-badge">現在</div>' : ''}
+      </div>`;
+  }).join('');
+
+  document.getElementById('profileBody').innerHTML = `
+    <div class="profile-hero-card">
+      <div class="profile-avatar">${rank.icon}</div>
+      <div class="profile-level-big">Level ${level}</div>
+      <div class="profile-rank-name">${rank.name}</div>
+      <div class="profile-level-num">冒険者ランク</div>
+      <div>
+        <div class="profile-xp-bar-track">
+          <div class="profile-xp-bar-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="profile-xp-numbers">
+          <span>${xpIntoLevel} XP</span>
+          <span>次のレベルまで ${xpNeeded - xpIntoLevel} XP</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-stats-grid">
+      <div class="profile-stat-card">
+        <div class="profile-stat-value">${xp}</div>
+        <div class="profile-stat-label">Total XP</div>
+      </div>
+      <div class="profile-stat-card">
+        <div class="profile-stat-value">${level}</div>
+        <div class="profile-stat-label">Level</div>
+      </div>
+      <div class="profile-stat-card">
+        <div class="profile-stat-value">${allQuests.questsDone || 0}</div>
+        <div class="profile-stat-label">クエスト達成</div>
+      </div>
+      <div class="profile-stat-card">
+        <div class="profile-stat-value">${allQuests.subsDone || 0}</div>
+        <div class="profile-stat-label">サブ達成</div>
+      </div>
+    </div>
+    <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">ランク一覧</div><div class="section-divider-line"></div></div>
+    <div class="profile-rank-ladder" style="margin-top:10px;">
+      ${rankLadderHtml}
+    </div>
+    <div style="height:16px;"></div>
+  `;
+}
+
+function updateStats(type) {
+  try {
+    const s = JSON.parse(localStorage.getItem('ql_stats') || '{"questsDone":0,"subsDone":0,"totalXp":0}');
+    if (type === 'quest') s.questsDone = (s.questsDone || 0) + 1;
+    if (type === 'sub')   s.subsDone   = (s.subsDone || 0) + 1;
+    localStorage.setItem('ql_stats', JSON.stringify(s));
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 async function init() {
   await openDB();
   loadSettings();
+  updateHeaderXP();
   await render();
 }
 
